@@ -1,0 +1,35 @@
+library ieee;
+use ieee.std_logic_1164.all;
+use ieee.numeric_std.all;
+
+entity galois is
+port
+(
+    clk : in std_logic;
+    reset : in std_logic;
+    output : out std_logic_vector(7 downto 0);
+    --enable : in STD_LOGIC
+);
+
+end galois;
+
+architecture behaviour of galois is 
+
+signal rand: STD_LOGIC_VECTOR(7 downto 0) := "01010101";
+
+    begin
+        process(clk, reset)
+        variable temp : STD_LOGIC := '0';
+        begin
+            
+            if (rising_edge(clk)) then
+                if (reset = '1') then 
+                    rand <= "10101010";
+                else -- elsif(enable = '1')
+                    temp := rand(4) XOR rand(3) XOR rand(2) XOR rand(0);
+                    rand <= temp & rand(7 downto 1);
+                end if;
+            end if;
+        end process;
+    output <= rand;
+end behaviour;
